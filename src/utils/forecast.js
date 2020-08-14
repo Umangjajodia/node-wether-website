@@ -1,15 +1,16 @@
 const request = require('request')
 
 const forecast = (lat,long,callback)=>{
-    const url = 'https://api.darksky.net/forecast/10a0ad18d94e9142d9129e76d2887d56/' + encodeURIComponent(lat) + ',' + encodeURIComponent(long) + ''
+    const url = 'http://api.weatherstack.com/current?access_key=2341ef0e605581eff205f068291c774b&query=' + encodeURIComponent(long) + ',' + encodeURIComponent(lat) + ''
     request({url , json:true},(error,{body})=>{
         if(error){
             console.log('Unable to connect to location',undefined)
         }else if(body.error){
             callback('permission denied',undefined)
         }else{
-            callback(undefined, body.daily.data[0].summary + ' it is currently ' +body.currently.temperature+' degres out. There is a ' + body.currently.precipProbability + ' % chance of rain and the humidity is '+ body.daily.data[0].humidity)
+            callback(undefined, 'The weather description is ' + body.current.weather_descriptions[0] + ' . It is currently ' +body.current.temperature +' degrees out. It feels like '+ body.current.feelslike + ' degrees out and the humidity is '+ body.current.humidity)
         }
     })
 }
 module.exports= forecast
+
